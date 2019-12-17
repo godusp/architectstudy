@@ -5,4 +5,5 @@ public class User {
     public String heroAvatar;
 
     public int hp;
+    public MoveState moveState = new MoveState();
 }

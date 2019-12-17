@@ -23,6 +23,14 @@ public class WhoElseIsHereCmdHandler implements CmdHandler<GameMsgProtocol.WhoEl
             GameMsgProtocol.WhoElseIsHereResult.UserInfo.Builder userInfoBuilder = GameMsgProtocol.WhoElseIsHereResult.UserInfo.newBuilder();
             userInfoBuilder.setUserId(user.userId);
             userInfoBuilder.setHeroAvatar(user.heroAvatar);
+            GameMsgProtocol.WhoElseIsHereResult.UserInfo.MoveState.Builder
+                    moveResultBuilder = GameMsgProtocol.WhoElseIsHereResult.UserInfo.MoveState.newBuilder();
+            moveResultBuilder.setFromPosX(user.moveState.fromPosX);
+            moveResultBuilder.setFromPosY(user.moveState.fromPosY);
+            moveResultBuilder.setToPosX(user.moveState.toPosX);
+            moveResultBuilder.setToPosY(user.moveState.toPosY);
+            moveResultBuilder.setStartTime(user.moveState.stateTime);
+            userInfoBuilder.setMoveState(moveResultBuilder);
             resultBuilder.addUserInfo(userInfoBuilder.build());
         }
 
