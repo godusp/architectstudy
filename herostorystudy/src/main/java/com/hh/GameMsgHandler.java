@@ -30,8 +30,9 @@ public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         super.handlerRemoved(ctx);
-        Integer userId = (Integer) ctx.channel().attr(AttributeKey.valueOf("userId")).get();
+        Broadcaster.removeChannel(ctx.channel());
 
+        Integer userId = (Integer) ctx.channel().attr(AttributeKey.valueOf("userId")).get();
         if(userId==null){
             return;
         }
@@ -39,7 +40,8 @@ public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
 
         GameMsgProtocol.UserQuitResult.Builder resultBuilder = GameMsgProtocol.UserQuitResult.newBuilder();
         resultBuilder.setQuitUserId(userId);
-        Broadcaster.broadcast(resultBuilder.build());
+        GameMsgProtocol.UserQuitResult result = resultBuilder.build();
+        Broadcaster.broadcast(result);
 
     }
 

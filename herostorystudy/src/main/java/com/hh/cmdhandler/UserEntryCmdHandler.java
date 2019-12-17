@@ -22,6 +22,7 @@ public class UserEntryCmdHandler implements CmdHandler<GameMsgProtocol.UserEntry
         User user = new User();
         user.userId = userId;
         user.heroAvatar = heroAvatar;
+        user.hp = 100;
         UserManager.addUser(user);
 
         ctx.channel().attr(AttributeKey.valueOf("userId")).set(userId);

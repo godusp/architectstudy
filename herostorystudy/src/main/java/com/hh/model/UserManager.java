@@ -25,4 +25,7 @@ public class UserManager {
         return USER_MAP.values();
     }
 
+    public static User getUserById(int targetUserId) {
+        return USER_MAP.get(targetUserId);
+    }
 }
