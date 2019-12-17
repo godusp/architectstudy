@@ -9,13 +9,13 @@ import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserEntryCmdHandler {
+public class UserEntryCmdHandler implements CmdHandler<GameMsgProtocol.UserEntryCmd>{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserEntryCmdHandler.class);
 
-    public void handle(ChannelHandlerContext ctx, Object msg){
-        LOGGER.info("登录用户{}",msg);
-        GameMsgProtocol.UserEntryCmd cmd = (GameMsgProtocol.UserEntryCmd) msg;
+    @Override
+    public void handle(ChannelHandlerContext ctx, GameMsgProtocol.UserEntryCmd cmd){
+        LOGGER.info("登录用户{}",cmd);
         int userId = cmd.getUserId();
         String heroAvatar = cmd.getHeroAvatar();
 

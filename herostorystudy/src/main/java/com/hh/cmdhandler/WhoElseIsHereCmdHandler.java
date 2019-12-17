@@ -9,11 +9,11 @@ import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WhoElseIsHereCmdHandler {
+public class WhoElseIsHereCmdHandler implements CmdHandler<GameMsgProtocol.WhoElseIsHereCmd>{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoElseIsHereCmdHandler.class);
 
-    public void handle(ChannelHandlerContext ctx, Object msg){
+    public void handle(ChannelHandlerContext ctx, GameMsgProtocol.WhoElseIsHereCmd msg){
         GameMsgProtocol.WhoElseIsHereResult.Builder resultBuilder = GameMsgProtocol.WhoElseIsHereResult.newBuilder();
 
         for (User user : UserManager.listUser()) {

@@ -1,7 +1,6 @@
 package com.hh;
 
 import com.google.protobuf.GeneratedMessageV3;
-import com.hh.msg.GameMsgProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
@@ -21,13 +20,7 @@ public class GameMsgEncoder extends ChannelOutboundHandlerAdapter {
             return;
         }
 
-        int msgCode = -1;
-
-        if(msg instanceof GameMsgProtocol.UserEntryResult){
-            msgCode = GameMsgProtocol.MsgCode.USER_ENTRY_RESULT_VALUE;
-        } else if(msg instanceof GameMsgProtocol.WhoElseIsHereResult){
-            msgCode = GameMsgProtocol.MsgCode.WHO_ELSE_IS_HERE_CMD_VALUE;
-        }
+        int msgCode = GameMsgRecognizer.getMsgCodeByMsgType(msg.getClass());
 
         byte[] msgBody = ((GeneratedMessageV3) msg).toByteArray();
 

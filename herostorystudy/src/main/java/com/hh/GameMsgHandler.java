@@ -1,5 +1,8 @@
 package com.hh;
 
+import com.google.protobuf.GeneratedMessageV3;
+import com.hh.cmdhandler.CmdHandler;
+import com.hh.cmdhandler.CmdHandlerFactory;
 import com.hh.cmdhandler.UserEntryCmdHandler;
 import com.hh.cmdhandler.WhoElseIsHereCmdHandler;
 import com.hh.model.User;
@@ -42,11 +45,15 @@ public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
 
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
 
-        if(msg instanceof GameMsgProtocol.UserEntryCmd){
-            new UserEntryCmdHandler().handle(ctx, msg);
-        } else if(msg instanceof GameMsgProtocol.WhoElseIsHereCmd){
-            new WhoElseIsHereCmdHandler().handle(ctx, msg);
-        }
+        CmdHandler<? extends GeneratedMessageV3> cmdHanlder = CmdHandlerFactory.getCmdHanlder(msg.getClass());
+        cmdHanlder.handle(ctx,cast(msg));
+    }
 
+    private static <T extends GeneratedMessageV3> T cast(Object msg){
+        if(msg==null){
+            return null;
+        } else {
+            return (T) msg;
+        }
     }
 }
