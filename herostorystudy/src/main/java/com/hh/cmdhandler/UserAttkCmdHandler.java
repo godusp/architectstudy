@@ -1,6 +1,7 @@
 package com.hh.cmdhandler;
 
 import com.hh.Broadcaster;
+import com.hh.MainThreadProcessor;
 import com.hh.model.User;
 import com.hh.model.UserManager;
 import com.hh.msg.GameMsgProtocol;
@@ -31,13 +32,19 @@ public class UserAttkCmdHandler implements CmdHandler<GameMsgProtocol.UserAttkCm
         if(targetUser==null){
             return;
         }
-        LOGGER.info("当前前程：{}",Thread.currentThread().getName());
-        targetUser.hp = targetUser.hp - subtractHp;
-        broadcastSubtractHp(targetUserId,subtractHp);
 
-        if(targetUser.hp <= 0){
-            broadcastSubtractDie(targetUserId);
-        }
+        MainThreadProcessor.getInstance().process(()->{
+            LOGGER.info("当前前程：{}",Thread.currentThread().getName());
+            targetUser.hp = targetUser.hp - subtractHp;
+            broadcastSubtractHp(targetUserId,subtractHp);
+
+            if(targetUser.hp <= 0){
+                broadcastSubtractDie(targetUserId);
+            }
+        });
+
+
+
     }
 
     private static void broadcastSubtractDie(int targetUserId) {
