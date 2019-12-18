@@ -29,8 +29,8 @@ public class UserMoveToCmdHandler implements CmdHandler<GameMsgProtocol.UserMove
         resuletBuilder.setMoveUserId(userId);
         resuletBuilder.setMoveFromPosX(moveState.fromPosX);
         resuletBuilder.setMoveFromPosY(moveState.fromPosY);
-        resuletBuilder.setMoveToPosX(moveState.fromPosX);
-        resuletBuilder.setMoveToPosY(moveState.fromPosY);
+        resuletBuilder.setMoveToPosX(moveState.toPosX);
+        resuletBuilder.setMoveToPosY(moveState.toPosY);
         resuletBuilder.setMoveStartTime(moveState.stateTime);
         GameMsgProtocol.UserMoveToResult result = resuletBuilder.build();
         Broadcaster.broadcast(result);
