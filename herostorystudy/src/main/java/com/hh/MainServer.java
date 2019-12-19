@@ -1,5 +1,6 @@
 package com.hh;
 
+import com.hh.cmdhandler.CmdHandlerFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -17,6 +18,9 @@ public class MainServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(MainServer.class);
 
     public static void main(String[] args) {
+        GameMsgRecognizer.init();
+        CmdHandlerFactory.init();
+        MySqlSessionFactory.init();
 
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workGroup = new NioEventLoopGroup();

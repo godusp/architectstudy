@@ -33,18 +33,13 @@ public class UserAttkCmdHandler implements CmdHandler<GameMsgProtocol.UserAttkCm
             return;
         }
 
-        MainThreadProcessor.getInstance().process(()->{
-            LOGGER.info("当前前程：{}",Thread.currentThread().getName());
-            targetUser.hp = targetUser.hp - subtractHp;
-            broadcastSubtractHp(targetUserId,subtractHp);
+        LOGGER.info("当前前程：{}",Thread.currentThread().getName());
+        targetUser.hp = targetUser.hp - subtractHp;
+        broadcastSubtractHp(targetUserId,subtractHp);
 
-            if(targetUser.hp <= 0){
-                broadcastSubtractDie(targetUserId);
-            }
-        });
-
-
-
+        if(targetUser.hp <= 0){
+            broadcastSubtractDie(targetUserId);
+        }
     }
 
     private static void broadcastSubtractDie(int targetUserId) {

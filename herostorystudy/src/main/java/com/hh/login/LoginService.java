@@ -3,7 +3,6 @@ package com.hh.login;
 import com.hh.MySqlSessionFactory;
 import com.hh.login.db.UserEntity;
 import com.hh.login.db.UserMapper;
-import com.hh.model.UserManager;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,7 @@ public class LoginService {
             UserMapper mapper = session.getMapper(UserMapper.class);
             UserEntity userEntity = mapper.queryUserByUserName(userName);
             if(userEntity==null){
-                userEntity = new UserEntity(userName, password, 1);
+                userEntity = new UserEntity(userName, password, "1");
                 mapper.insertUser(userEntity);
             } else {
                 if(!password.equals(userEntity.getPassword())){

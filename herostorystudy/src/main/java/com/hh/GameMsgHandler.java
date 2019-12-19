@@ -45,17 +45,12 @@ public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
 
     }
 
+    @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
-
-        CmdHandler<? extends GeneratedMessageV3> cmdHanlder = CmdHandlerFactory.getCmdHanlder(msg.getClass());
-        cmdHanlder.handle(ctx,cast(msg));
-    }
-
-    private static <T extends GeneratedMessageV3> T cast(Object msg){
-        if(msg==null){
-            return null;
-        } else {
-            return (T) msg;
+        if(msg instanceof GeneratedMessageV3){
+            MainThreadProcessor.getInstance().process(ctx,(GeneratedMessageV3) msg);
         }
     }
+
+
 }

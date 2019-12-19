@@ -1,12 +1,13 @@
 package com.hh.login.db;
 
+
 public class UserEntity {
     private int userId;
     private String userName;
     private String password;
-    private int heroAvatar;
+    private String heroAvatar;
 
-    public UserEntity( String userName, String password, int heroAvatar) {
+    public UserEntity( String userName, String password, String heroAvatar) {
         this.userName = userName;
         this.password = password;
         this.heroAvatar = heroAvatar;
@@ -39,11 +40,11 @@ public class UserEntity {
         this.password = password;
     }
 
-    public int getHeroAvatar() {
+    public String getHeroAvatar() {
         return heroAvatar;
     }
 
-    public void setHeroAvatar(int heroAvatar) {
+    public void setHeroAvatar(String heroAvatar) {
         this.heroAvatar = heroAvatar;
     }
 

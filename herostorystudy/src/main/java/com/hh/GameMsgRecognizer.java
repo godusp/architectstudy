@@ -17,7 +17,7 @@ public class GameMsgRecognizer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameMsgRecognizer.class);
 
-    static {
+    public static void init() {
         Class<GameMsgProtocol> gameMsgProtocolClass = GameMsgProtocol.class;
         Class<?>[] msgClasses = gameMsgProtocolClass.getDeclaredClasses();
 

@@ -16,20 +16,19 @@ public class UserEntryCmdHandler implements CmdHandler<GameMsgProtocol.UserEntry
     @Override
     public void handle(ChannelHandlerContext ctx, GameMsgProtocol.UserEntryCmd cmd){
         LOGGER.info("登录用户{}",cmd);
-        int userId = cmd.getUserId();
-        String heroAvatar = cmd.getHeroAvatar();
+        Integer userId = (Integer) ctx.channel().attr(AttributeKey.valueOf("userId")).get();
+        if(userId==null){
+            return;
+        }
 
-        User user = new User();
-        user.userId = userId;
-        user.heroAvatar = heroAvatar;
-        user.hp = 100;
-        UserManager.addUser(user);
+        User user = UserManager.getUserById(userId);
 
         ctx.channel().attr(AttributeKey.valueOf("userId")).set(userId);
 
         GameMsgProtocol.UserEntryResult.Builder resultBuilder = GameMsgProtocol.UserEntryResult.newBuilder();
         resultBuilder.setUserId(userId);
-        resultBuilder.setHeroAvatar(heroAvatar);
+        resultBuilder.setUserName(user.userName);
+        resultBuilder.setHeroAvatar(user.heroAvatar);
 
         GameMsgProtocol.UserEntryResult result = resultBuilder.build();
         Broadcaster.broadcast(result);

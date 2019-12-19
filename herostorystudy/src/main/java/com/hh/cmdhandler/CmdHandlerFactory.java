@@ -15,7 +15,7 @@ import java.util.Set;
 public class CmdHandlerFactory {
     private static final Map<Class<?> ,CmdHandler<? extends GeneratedMessageV3>> CMD_HANDLER_MAP = new HashMap<>();
 
-    static {
+    public static void init() {
 //        CMD_HANDLER_MAP.put(GameMsgProtocol.UserEntryCmd.class,new UserEntryCmdHandler());
 //        CMD_HANDLER_MAP.put(GameMsgProtocol.WhoElseIsHereCmd.class,new WhoElseIsHereCmdHandler());
         String pakageName = CmdHandlerFactory.class.getPackage().getName();

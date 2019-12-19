@@ -13,7 +13,7 @@ public final class MySqlSessionFactory {
 
     private MySqlSessionFactory(){}
 
-    static {
+    public static void init() {
         try {
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream("MyBatisConfig.xml"));
         } catch (IOException e) {
