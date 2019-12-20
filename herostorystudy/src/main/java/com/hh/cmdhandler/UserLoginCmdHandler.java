@@ -1,5 +1,7 @@
 package com.hh.cmdhandler;
 
+import com.hh.async.AsyncOperation;
+import com.hh.async.AsyncOprationProcessor;
 import com.hh.login.LoginService;
 import com.hh.login.db.UserEntity;
 import com.hh.model.User;
@@ -16,37 +18,32 @@ public class UserLoginCmdHandler implements CmdHandler<GameMsgProtocol.UserLogin
 
     @Override
     public void handle(ChannelHandlerContext ctx, GameMsgProtocol.UserLoginCmd cmd) {
-        if(ctx==null || cmd==null){
+        if (ctx == null || cmd == null) {
             return;
         }
         String userName = cmd.getUserName();
         String password = cmd.getPassword();
+        LoginService.getInstance().login(userName, password,(userEntity)->{
+            LOGGER.info("当前线程：{}", Thread.currentThread().getName());
+            if (userEntity != null) {
+                User user = new User();
+                user.hp = 100;
+                user.userId = userEntity.getUserId();
+                user.userName = userEntity.getUserName();
+                user.heroAvatar = userEntity.getHeroAvatar();
 
-        UserEntity userEntity = null;
-        try {
-            userEntity = LoginService.getInstance().login(userName, password);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(),e);
-        }
-        if(userEntity != null){
+                UserManager.addUser(user);
+                ctx.channel().attr(AttributeKey.valueOf("userId")).set(user.userId);
 
-            User user = new User();
-            user.hp = 100;
-            user.userId = userEntity.getUserId();
-            user.userName = userEntity.getUserName();
-            user.heroAvatar = userEntity.getHeroAvatar();
-
-            UserManager.addUser(user);
-            ctx.channel().attr(AttributeKey.valueOf("userId")).set(user.userId);
-
-            GameMsgProtocol.UserLoginResult.Builder resultBuilder = GameMsgProtocol.UserLoginResult.newBuilder();
-            resultBuilder.setUserId(userEntity.getUserId());
-            resultBuilder.setUserName(userName);
-            resultBuilder.setHeroAvatar(userEntity.getHeroAvatar());
-            GameMsgProtocol.UserLoginResult result = resultBuilder.build();
-            ctx.writeAndFlush(result);
-        }
-
-
+                GameMsgProtocol.UserLoginResult.Builder resultBuilder = GameMsgProtocol.UserLoginResult.newBuilder();
+                resultBuilder.setUserId(userEntity.getUserId());
+                resultBuilder.setUserName(userName);
+                resultBuilder.setHeroAvatar(userEntity.getHeroAvatar());
+                GameMsgProtocol.UserLoginResult result = resultBuilder.build();
+                ctx.writeAndFlush(result);
+            }
+        });
     }
+
+
 }

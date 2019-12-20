@@ -48,9 +48,26 @@ public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         if(msg instanceof GeneratedMessageV3){
-            MainThreadProcessor.getInstance().process(ctx,(GeneratedMessageV3) msg);
+            MainThreadProcessor.getInstance().process(()->{
+                CmdHandler<? extends GeneratedMessageV3> cmdHandler = CmdHandlerFactory.getCmdHanlder(msg.getClass());
+                if(cmdHandler==null){
+                    LOGGER.error("未找到对应的指令处理器,msgClass = {}" , msg.getClass().getName());
+                    return;
+                }
+                try {
+                    cmdHandler.handle(ctx,cast(msg));
+                } catch (Exception e) {
+                    LOGGER.error(e.getMessage(),e);
+                }
+            });
         }
     }
 
-
+    private static <T extends GeneratedMessageV3> T cast(Object msg){
+        if(msg==null){
+            return null;
+        } else {
+            return (T) msg;
+        }
+    }
 }

@@ -3,9 +3,10 @@ package com.hh.model;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserManager {
-    private static final Map<Integer, User> USER_MAP = new HashMap<Integer, User>();
+    private static final Map<Integer, User> USER_MAP = new ConcurrentHashMap<>();
 
     private UserManager(){}
 

@@ -29,26 +29,9 @@ public class MainThreadProcessor {
         return INSTANCE;
     }
 
-    public void process(ChannelHandlerContext ctx, GeneratedMessageV3 msg){
-        ES.submit(()->{
-            CmdHandler<? extends GeneratedMessageV3> cmdHandler = CmdHandlerFactory.getCmdHanlder(msg.getClass());
-            if(cmdHandler==null){
-                LOGGER.error("未找到对应的指令处理器,msgClass = {}" , msg.getClass().getName());
-                return;
-            }
-            try {
-                cmdHandler.handle(ctx,cast(msg));
-            } catch (Exception e) {
-                LOGGER.error(e.getMessage(),e);
-            }
-        });
-    }
-
-    private static <T extends GeneratedMessageV3> T cast(Object msg){
-        if(msg==null){
-            return null;
-        } else {
-            return (T) msg;
+    public void process(Runnable runnable){
+        if(runnable != null){
+            ES.submit(runnable);
         }
     }
 }
